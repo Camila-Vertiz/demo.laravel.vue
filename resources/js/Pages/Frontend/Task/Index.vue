@@ -40,10 +40,10 @@
                             <td class="py-2 px-4 border">
                                 {{ item.description }}
                             </td>
+                            <td class="py-2 px-4 border">{{ item.status }}</td>
                             <td class="py-2 px-4 border">
                                 {{ item.priority }}
                             </td>
-                            <td class="py-2 px-4 border">{{ item.status }}</td>
                             <td class="py-2 px-4 border">
                                 {{ item.created_at }}
                             </td>
@@ -57,17 +57,17 @@
                                 >
                                     Show
                                 </Link>
-                                <Link
-                                    :href="route('tasks.edit', item.id)"
+                                <button
+                                    @click="openModal('edit', item)"
                                     class="px-2 oy-1 text-sm bg-green-300 text-dark me-2 rounded inline-block"
                                 >
                                     Edit
-                                </Link>
+                                </button>
                                 <button
                                     type="submit"
                                     class="px-2 oy-1 text-sm bg-red-500 text-white me-2 rounded inline-block"
                                 >
-                                    Detele
+                                    Delete
                                 </button>
                             </td>
                         </tr>
@@ -115,14 +115,14 @@
                                 <label
                                     for="title"
                                     class="block text-sm font-medium text-gray-600"
-                                    >Título</label
+                                    >Title</label
                                 >
                                 <input
                                     type="text"
                                     id="title"
                                     v-model="form.title"
                                     class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    placeholder="Ingresa el título de la tarea"
+                                    placeholder="Enter task title"
                                 />
                                 <div v-if="errors.title" class="error-text">
                                     {{ errors.title }}
@@ -133,14 +133,14 @@
                                 <label
                                     for="description"
                                     class="block text-sm font-medium text-gray-600"
-                                    >Descripción</label
+                                    >Description</label
                                 >
                                 <input
                                     type="text"
                                     id="description"
                                     v-model="form.description"
                                     class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    placeholder="Ingresa la descripción de la tarea"
+                                    placeholder="Enter task description"
                                 />
                                 <div
                                     v-if="errors.description"
@@ -155,7 +155,7 @@
                                     <label
                                         for="status"
                                         class="block text-sm font-medium text-gray-600"
-                                        >Estado</label
+                                        >Status</label
                                     >
                                     <select
                                         id="status"
@@ -163,16 +163,14 @@
                                         class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
                                     >
                                         <option value="">
-                                            Selecciona un estado
+                                            Select a status
                                         </option>
-                                        <option value="pending">
-                                            Pendiente
-                                        </option>
+                                        <option value="pending">Pending</option>
                                         <option value="in_progress">
-                                            En proceso
+                                            In Progress
                                         </option>
                                         <option value="completed">
-                                            Completada
+                                            Completed
                                         </option>
                                     </select>
                                     <div
@@ -187,7 +185,7 @@
                                     <label
                                         for="priority"
                                         class="block text-sm font-medium text-gray-600"
-                                        >Prioridad</label
+                                        >Priority</label
                                     >
                                     <select
                                         id="priority"
@@ -195,11 +193,11 @@
                                         class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
                                     >
                                         <option value="">
-                                            Selecciona una prioridad
+                                            Select a priority
                                         </option>
-                                        <option value="low">Baja</option>
-                                        <option value="medium">Media</option>
-                                        <option value="high">Alta</option>
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
                                     </select>
                                     <div
                                         v-if="errors.priority"
@@ -209,40 +207,125 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="mt-4">
+                                <button
+                                    @click="closeModal"
+                                    class="bg-gray-400 text-white p-2 rounded mr-2"
+                                >
+                                    Close
+                                </button>
+                                <button
+                                    @click="saveTask"
+                                    v-if="
+                                        modalType === 'edit' ||
+                                        modalType === 'create'
+                                    "
+                                    class="bg-blue-500 text-white p-2 rounded"
+                                >
+                                    Save
+                                </button>
+                            </div>
                         </form>
                     </div>
 
                     <div v-if="modalType === 'edit'">
                         <!-- Form for editing task -->
-                        <input
-                            type="text"
-                            v-model="currentTask.title"
-                            class="mb-2 p-2 w-full"
-                        />
-                        <input
-                            type="text"
-                            v-model="currentTask.description"
-                            class="mb-2 p-2 w-full"
-                        />
-                        <!-- Add more fields as necessary -->
-                    </div>
+                        <div>
+                            <label
+                                for="title"
+                                class="block text-sm font-medium text-gray-600"
+                                >Title</label
+                            >
+                            <input
+                                type="text"
+                                id="title"
+                                v-model="currentTask.title"
+                                class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                                placeholder="Enter task title"
+                            />
+                            <div v-if="errors.title" class="error-text">
+                                {{ errors.title }}
+                            </div>
+                        </div>
 
-                    <div class="mt-4">
-                        <button
-                            @click="closeModal"
-                            class="bg-gray-400 text-white p-2 rounded mr-2"
-                        >
-                            Close
-                        </button>
-                        <button
-                            @click="saveTask"
-                            v-if="
-                                modalType === 'edit' || modalType === 'create'
-                            "
-                            class="bg-blue-500 text-white p-2 rounded"
-                        >
-                            Save
-                        </button>
+                        <div>
+                            <label
+                                for="description"
+                                class="block text-sm font-medium text-gray-600"
+                                >Description</label
+                            >
+                            <input
+                                type="text"
+                                id="description"
+                                v-model="currentTask.description"
+                                class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                                placeholder="Enter task description"
+                            />
+                            <div v-if="errors.description" class="error-text">
+                                {{ errors.description }}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    for="status"
+                                    class="block text-sm font-medium text-gray-600"
+                                    >Status</label
+                                >
+                                <select
+                                    id="status"
+                                    v-model="currentTask.status"
+                                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                                >
+                                    <option value="">Select a status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in_progress">
+                                        In Progress
+                                    </option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                                <div v-if="errors.status" class="error-text">
+                                    {{ errors.status }}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label
+                                    for="priority"
+                                    class="block text-sm font-medium text-gray-600"
+                                    >Priority</label
+                                >
+                                <select
+                                    id="priority"
+                                    v-model="currentTask.priority"
+                                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                                >
+                                    <option value="">Select a priority</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                                <div v-if="errors.priority" class="error-text">
+                                    {{ errors.priority }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button
+                                @click="closeModal"
+                                class="bg-gray-400 text-white p-2 rounded mr-2"
+                            >
+                                Close
+                            </button>
+                            <button
+                                @click="updateTask"
+                                class="bg-blue-500 text-white p-2 rounded"
+                            >
+                                Save
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -254,7 +337,8 @@
 import { ref } from "vue";
 import FrontendLayout from "@/Layouts/FrontendLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-defineProps({ errors: Object, tasks: Array });
+
+const props = defineProps({ errors: Object, tasks: Array, task: Object });
 
 const modalOpen = ref(false);
 const modalType = ref("");
@@ -266,7 +350,7 @@ const openModal = (type, task = null) => {
     modalOpen.value = true;
 };
 
-const form = useForm({
+var form = useForm({
     title: "",
     description: "",
     status: "",
@@ -274,7 +358,29 @@ const form = useForm({
 });
 
 const saveTask = () => {
-    const rest = form.post(route("tasks.store"));
+    const res = form.post(route("tasks.store")); // Create new task
+    modalOpen.value = false;
+    form.reset();
+};
+
+const updateTask = () => {
+    form = useForm({
+        title: currentTask.value.title,
+        description: currentTask.value.description,
+        status: currentTask.value.status,
+        priority: currentTask.value.priority,
+    });
+    const res = form.put(route("tasks.update", currentTask.value.id));
+    modalOpen.value = false;
+    form = useForm({
+        title: "",
+        description: "",
+        status: "",
+        priority: "",
+    });
+};
+
+const closeModal = () => {
     modalOpen.value = false;
 };
 </script>

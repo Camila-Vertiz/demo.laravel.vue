@@ -1,66 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Proyecto de Gestión de Tareas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto es una aplicación para la gestión de tareas, donde los usuarios pueden crear, editar, eliminar y ver las tareas. La aplicación utiliza **Laravel** para el backend y **Vue.js** para el frontend, integrando ambos con la ayuda de Inertia.js.
 
-## About Laravel
+## Descripción de la Arquitectura
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   **Backend**: Laravel, un framework PHP, se utiliza para manejar la lógica de negocio y la comunicación con la base de datos.
+-   **Frontend**: Vue.js, un framework JavaScript, se utiliza para crear la interfaz de usuario interactiva, y Inertia.js se usa para hacer las interacciones entre el frontend y el backend más fluidas y rápidas sin recargar la página.
+-   **Base de Datos**: MySQL, gestionada a través de XAMPP.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas en tu sistema:
 
-## Learning Laravel
+-   **XAMPP** (para manejar el servidor Apache y MySQL):
+    -   Puedes descargar XAMPP desde [https://www.apachefriends.org/es/index.html](https://www.apachefriends.org/es/index.html).
+    -   XAMPP incluye PHP, MySQL, y phpMyAdmin, lo que facilita la instalación y gestión del servidor y la base de datos.
+-   **PHP** >= 8.0 (incluido con XAMPP).
+-   **Composer** (para la gestión de dependencias de PHP).
+-   **Node.js** >= 16.x.
+-   **npm** (o **Yarn**, dependiendo de tu preferencia para la gestión de dependencias de JavaScript).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Instrucciones para Clonar e Instalar Dependencias
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 1. Clonar el Repositorio
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Primero, clona este repositorio en tu máquina local:
 
-## Laravel Sponsors
+`bash`
+`git clone https://github.com/tu-usuario/gestion-tareas.git`
+`cd gestion-tareas`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### 2. Instalar las Dependencias del Backend
 
-### Premium Partners
+Asegúrate de estar en la carpeta raíz del proyecto y luego instala las dependencias de Laravel utilizando Composer:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+`composer install`
 
-## Contributing
+### 3.Configurar la Base de Datos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Abre XAMPP y enciende los servicios de Apache y MySQL.
+Accede a phpMyAdmin a través de http://localhost/phpmyadmin en tu navegador.
+Crea una base de datos llamada demo:
+En phpMyAdmin, haz clic en "Bases de datos".
+Crea una base de datos nueva con el nombre demo.
 
-## Code of Conduct
+### 4. Configurar el Archivo .env
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Abre el archivo .env y configura las variables de entorno para la base de datos:
+`DB_CONNECTION=mysql`
+`DB_HOST=127.0.0.1`
+`DB_PORT=3306`
+`DB_DATABASE=demo`
+`DB_USERNAME=root`
+`DB_PASSWORD=`
 
-## Security Vulnerabilities
+### 6. Ejecutar las Migraciones de la Base de Datos
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Ejecuta las migraciones para crear las tablas necesarias en la base de datos:
 
-## License
+`bash`
+`php artisan migrate`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 7. Instalar las Dependencias del Frontend
+
+Instala las dependencias del frontend utilizando npm (o Yarn si lo prefieres):
+
+`bash`
+`npm install`
+
+### 8. Ejecutar el Proyecto
+
+Para ejecutar tanto el backend como el frontend en desarrollo, ejecuta los siguientes comandos en dos terminales separadas:
+
+#### Backend (Laravel)
+
+`bash`
+`php artisan serve`
+Esto ejecutará el backend en http://localhost:8000.
+
+#### Frontend (Vue.js)
+
+`bash`
+`npm run dev`
+Esto ejecutará el frontend en http://localhost:3000.
+
+## Rutas y Funcionalidades
+
+-   GET /tasks - Muestra todas las tareas.
+-   POST /tasks - Crea una nueva tarea.
+-   PUT /tasks/{task} - Actualiza una tarea existente.
+-   DELETE /tasks/{task} - Elimina una tarea.
+
+El frontend interactúa con estas rutas utilizando Axios para enviar y recibir datos de manera asincrónica.

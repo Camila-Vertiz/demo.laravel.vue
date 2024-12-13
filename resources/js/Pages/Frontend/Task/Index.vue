@@ -64,7 +64,7 @@
                                     Edit
                                 </button>
                                 <button
-                                    type="submit"
+                                    @click="deleteTask(item.id)"
                                     class="px-2 oy-1 text-sm bg-red-500 text-white me-2 rounded inline-block"
                                 >
                                     Delete
@@ -390,6 +390,13 @@ const updateTask = () => {
 
 const closeModal = () => {
     modalOpen.value = false;
+};
+
+const deleteTask = (itemid) => {
+    form = useForm({});
+    if (confirm("Are you sure you want to delete this task?")) {
+        form.delete(route("tasks.destroy", itemid));
+    }
 };
 </script>
 

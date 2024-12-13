@@ -118,7 +118,7 @@
 
                     <div v-if="modalType === 'create'">
                         <!-- Form for creating a task -->
-                        <form @submit.prevent="saveTask()" class="space-y-6">
+                        <form class="space-y-6">
                             <div>
                                 <label
                                     for="title"
@@ -331,7 +331,7 @@
                                 @click="updateTask"
                                 class="bg-blue-500 text-white p-2 rounded"
                             >
-                                Save
+                                Update
                             </button>
                         </div>
                     </div>
@@ -347,6 +347,7 @@ import FrontendLayout from "@/Layouts/FrontendLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
 const props = defineProps({ errors: Object, tasks: Array, task: Object });
+const tasks = ref([...props.tasks]);
 
 const modalOpen = ref(false);
 const modalType = ref("");
@@ -365,10 +366,16 @@ var form = useForm({
     priority: "",
 });
 
-const saveTask = () => {
-    const res = form.post(route("tasks.store")); // Create new task
-    modalOpen.value = false;
-    form.reset();
+const saveTask = async () => {
+    try {
+        console.log("una");
+        const response = await axios.post("/tasks", form); // Asegúrate de que la URL sea correcta
+        tasks.value.push(response.data); // Agrega la nueva tarea a la lista sin recargar
+        modalOpen.value = false;
+        form.reset();
+    } catch (error) {
+        console.error("Error al guardar la tarea:", error);
+    }
 };
 
 const updateTask = () => {
@@ -392,10 +399,15 @@ const closeModal = () => {
     modalOpen.value = false;
 };
 
-const deleteTask = (itemid) => {
-    form = useForm({});
-    if (confirm("Are you sure you want to delete this task?")) {
-        form.delete(route("tasks.destroy", itemid));
+const deleteTask = async (itemid) => {
+    try {
+        // Realizar la eliminación en el backend
+        await axios.delete(`/tasks/${itemid}`);
+
+        // Eliminar la tarea de la lista local
+        tasks.value = tasks.value.filter((task) => task.id !== itemid);
+    } catch (error) {
+        console.error("Error al eliminar la tarea:", error);
     }
 };
 </script>

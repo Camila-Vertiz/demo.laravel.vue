@@ -51,12 +51,12 @@
                                 {{ item.updated_at }}
                             </td>
                             <td class="py-2 px-4 border">
-                                <Link
-                                    :href="route('tasks.show', item.id)"
+                                <button
+                                    @click="openModal('show', item)"
                                     class="px-2 oy-1 text-sm bg-blue-300 text-dark me-2 rounded inline-block"
                                 >
                                     Show
-                                </Link>
+                                </button>
                                 <button
                                     @click="openModal('edit', item)"
                                     class="px-2 oy-1 text-sm bg-green-300 text-dark me-2 rounded inline-block"
@@ -106,6 +106,14 @@
                             <strong>Updated At:</strong>
                             {{ currentTask?.updated_at }}
                         </p>
+                        <div class="mt-4">
+                            <button
+                                @click="closeModal"
+                                class="bg-gray-400 text-white p-2 rounded mr-2"
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
 
                     <div v-if="modalType === 'create'">

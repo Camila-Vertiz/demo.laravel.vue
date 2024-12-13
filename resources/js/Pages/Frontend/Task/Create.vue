@@ -1,7 +1,10 @@
 <template>
     <div>
+        <Head title="Create Tasks"></Head>
         <FrontendLayout>
-            <Head title="Create Tasks"></Head>
+            <!-- <div v-if="$page.props.flash.message" class="alert">
+                {{ $page.props.flash.message }}
+            </div> -->
 
             <div
                 class="mt-6 mx-auto max-w-4xl p-6 bg-white shadow-md rounded-lg"
@@ -18,7 +21,7 @@
                     </Link>
                 </div>
 
-                <form @submit.prevent="saveProduct()" class="space-y-6">
+                <form @submit.prevent="saveTask()" class="space-y-6">
                     <div>
                         <label
                             for="title"
@@ -134,7 +137,7 @@ const form = useForm({
     priority: "",
 });
 
-const saveProduct = () => {
+const saveTask = () => {
     const rest = form.post(route("tasks.store"));
     if (res) {
         form.reset();

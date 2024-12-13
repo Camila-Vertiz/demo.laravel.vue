@@ -15,7 +15,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Frontend/Task/Index');
+        $tasks = Task::get();
+        return Inertia::render('Frontend/Task/Index', [
+            'tasks' => $tasks
+        ]);
     }
 
     /**
@@ -47,9 +50,10 @@ class TaskController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'priority' => $request->priority,
-            'status' => $request->status
+            'status' => $request->status,
+            'created_at' => now() // Usa la fecha y hora actual
         ]);
-        return redirect()->to('/task')->with('success', 'Tarea creada correctamente');
+        return redirect()->to('/tasks')->with('message', 'Tarea creada correctamente');
     }
 
     /**

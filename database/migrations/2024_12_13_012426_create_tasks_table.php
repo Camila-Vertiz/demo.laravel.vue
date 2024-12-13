@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('description');
             $table->string('status');
             $table->string('priority');
-            $table->timestamps();
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

@@ -35,23 +35,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="py-2 px-4 border">1</td>
-                            <td class="py-2 px-4 border">2</td>
-                            <td class="py-2 px-4 border">3</td>
-                            <td class="py-2 px-4 border">4</td>
-                            <td class="py-2 px-4 border">5</td>
-                            <td class="py-2 px-4 border">6</td>
-                            <td class="py-2 px-4 border">7</td>
+                        <tr v-for="(item, index) in tasks" :key="index">
+                            <td class="py-2 px-4 border">{{ item.id }}</td>
+                            <td class="py-2 px-4 border">{{ item.title }}</td>
+                            <td class="py-2 px-4 border">
+                                {{ item.description }}
+                            </td>
+                            <td class="py-2 px-4 border">
+                                {{ item.priority }}
+                            </td>
+                            <td class="py-2 px-4 border">{{ item.status }}</td>
+                            <td class="py-2 px-4 border">
+                                {{ item.created_at }}
+                            </td>
+                            <td class="py-2 px-4 border">
+                                {{ item.updated_at }}
+                            </td>
                             <td class="py-2 px-4 border">
                                 <Link
-                                    :href="route('tasks.create')"
+                                    :href="route('tasks.show', item.id)"
                                     class="px-2 oy-1 text-sm bg-blue-300 text-dark me-2 rounded inline-block"
                                 >
                                     Show
                                 </Link>
                                 <Link
-                                    :href="route('tasks.create')"
+                                    :href="route('tasks.edit', item.id)"
                                     class="px-2 oy-1 text-sm bg-green-300 text-dark me-2 rounded inline-block"
                                 >
                                     Edit
@@ -74,4 +82,5 @@
 <script setup>
 import FrontendLayout from "@/Layouts/FrontendLayout.vue";
 import { Head, Link } from "@inertiajs/vue3";
+defineProps({ tasks: Array });
 </script>

@@ -18,7 +18,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [FrontendController::class,'index'])->name('home');
+Route::get('/', [TaskController::class,'index'])->name('home');
 Route::get('/task', [FrontendController::class,'Task'])->name('task');
 
 Route::resource('tasks', TaskController::class);

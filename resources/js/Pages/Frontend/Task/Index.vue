@@ -1,7 +1,10 @@
 <template>
     <div>
+        <Head title="Tasks"></Head>
         <FrontendLayout>
-            <Head title="Tasks"></Head>
+            <!-- <div v-if="$page.props.flash.message" class="alert">
+                {{ $page.props.flash.message }}
+            </div> -->
 
             <div class="mt-4 mx-4">
                 <div class="flex justify-between">

@@ -40,8 +40,8 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
+            'title' => 'required | string | max:50',
+            'description' => 'required | string | max:100',
             'priority' => 'required',
             'status' => 'required',
         ]);
@@ -51,9 +51,9 @@ class TaskController extends Controller
             'description' => $request->description,
             'priority' => $request->priority,
             'status' => $request->status,
-            'created_at' => now() // Usa la fecha y hora actual
+            'updated_at' => now() 
         ]);
-        return redirect()->to('/tasks')->with('message', 'Tarea creada correctamente');
+        return redirect()->to('/tasks')->with('message', 'Tarea actualizada correctamente');
     }
 
     /**
@@ -73,9 +73,11 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Task $task)
     {
-        //
+        return Inertia::render('Frontend/Task/Edit', [
+            'task' => $task
+        ]);
     }
 
     /**
@@ -85,9 +87,22 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Task $task)
     {
-        //
+        $request->validate([
+            'title' => 'required | string | max:50',
+            'description' => 'required | string | max:100',
+            'priority' => 'required',
+            'status' => 'required',
+        ]);
+
+        $task->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'priority' => $request->priority,
+            'status' => $request->status,
+        ]);
+        return redirect()->to('/tasks')->with('message', 'Tarea creada correctamente');
     }
 
     /**

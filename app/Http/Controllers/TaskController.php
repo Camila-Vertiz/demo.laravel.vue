@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -35,7 +36,20 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'priority' => 'required',
+            'status' => 'required',
+        ]);
+
+        Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'priority' => $request->priority,
+            'status' => $request->status
+        ]);
+        return redirect()->to('/task')->with('success', 'Tarea creada correctamente');
     }
 
     /**

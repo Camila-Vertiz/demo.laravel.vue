@@ -18,10 +18,7 @@
                     </Link>
                 </div>
 
-                <form
-                    @submit.prevent="form.post(route('tasks.store'))"
-                    class="space-y-6"
-                >
+                <form @submit.prevent="saveProduct()" class="space-y-6">
                     <div>
                         <label
                             for="title"
@@ -35,6 +32,9 @@
                             class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
                             placeholder="Ingresa el título de la tarea"
                         />
+                        <div v-if="errors.title" class="error-text">
+                            {{ errors.title }}
+                        </div>
                     </div>
 
                     <div>
@@ -50,6 +50,9 @@
                             class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
                             placeholder="Ingresa la descripción de la tarea"
                         />
+                        <div v-if="errors.description" class="error-text">
+                            {{ errors.description }}
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -69,6 +72,9 @@
                                 <option value="in_progress">En proceso</option>
                                 <option value="completed">Completada</option>
                             </select>
+                            <div v-if="errors.status" class="error-text">
+                                {{ errors.status }}
+                            </div>
                         </div>
 
                         <div>
@@ -89,6 +95,9 @@
                                 <option value="medium">Media</option>
                                 <option value="high">Alta</option>
                             </select>
+                            <div v-if="errors.priority" class="error-text">
+                                {{ errors.priority }}
+                            </div>
                         </div>
                     </div>
 
@@ -116,10 +125,26 @@
 import FrontendLayout from "@/Layouts/FrontendLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
+defineProps({ errors: Object });
+
 const form = useForm({
     title: "",
     description: "",
     status: "",
     priority: "",
 });
+
+const saveProduct = () => {
+    const rest = form.post(route("tasks.store"));
+    if (res) {
+        form.reset();
+    }
+};
 </script>
+
+<style scoped>
+.error-text {
+    color: red;
+    font-size: 12px;
+}
+</style>

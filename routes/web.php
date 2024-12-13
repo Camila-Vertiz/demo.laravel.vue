@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,6 +20,8 @@ use Inertia\Inertia;
 
 Route::get('/', [FrontendController::class,'index'])->name('home');
 Route::get('/task', [FrontendController::class,'Task'])->name('task');
+
+Route::resource('tasks', TaskController::class);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
